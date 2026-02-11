@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whiskers Media | Team Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* DIM Professional Theme */
+            --bg-color: #0f172a; /* Deep Slate Blue */
+            --bg-gradient: radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 100%);
+            --card-bg: #1e293b;
+            --card-bg-light: #f8fafc; /* For inner cards */
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --text-dark: #1e293b;
+            
+            /* Team Colors */
+            --brand-blue: #3b82f6; 
+            --creator-orange: #f97316;
+            --action-green: #10b981;
+            
+            /* Status */
+            --border-dim: #334155;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: var(--bg-gradient);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER --- */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-dim);
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: -0.5px;
+            color: #fff;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .shared-email {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-block;
+            margin-top: 15px;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        /* --- TEAM ROLES --- */
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        .roles-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .role-card {
+            background: var(--card-bg-light);
+            color: var(--text-dark);
+            padding: 25px;
+            border-radius: 12px;
+            border-top: 5px solid;
+            transition: transform 0.2s;
+        }
+
+        .role-card:hover { transform: translateY(-5px); }
+
+        .role-card h3 { margin: 5px 0; font-size: 20px; color: #0f172a; }
+        .role-card span { font-size: 12px; font-weight: 700; text-transform: uppercase; display: block; }
+        .role-card p { font-size: 14px; color: #475569; line-height: 1.5; margin-top: 10px; }
+
+        /* --- WORKFLOW DIAGRAM --- */
+        .workflow-box {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border-dim);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .flow-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        /* Connecting Line (Desktop) */
+        .flow-line {
+            position: absolute;
+            top: 25px;
+            left: 50px;
+            right: 50px;
+            height: 3px;
+            background: #334155;
+            z-index: 1;
+        }
+
+        .step {
+            position: relative;
+            z-index: 2;
+            width: 18%; /* Distribute space */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg); /* Match background to hide line behind */
+            border: 3px solid var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+            font-size: 18px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Shadow to separate from line */
+        }
+
+        .step-label { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 5px;}
+        .step-sub { font-size: 12px; color: var(--text-muted); line-height: 1.3;}
+        
+        .circle.active { border-color: var(--action-green); color: var(--action-green); }
+        .circle.brand { border-color: var(--brand-blue); color: var(--brand-blue); }
+        .circle.creator { border-color: var(--creator-orange); color: var(--creator-orange); }
+
+        /* --- THE FILES (SHEET ECOSYSTEM) --- */
+        .sheet-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .file-row {
+            background: var(--card-bg-light);
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            color: var(--text-dark);
+            border-left: 6px solid #ccc;
+        }
+
+        .file-icon { font-size: 24px; margin-right: 20px; min-width: 40px; text-align: center; }
+        
+        .file-info { flex: 1; }
+        .file-info h4 { margin: 0 0 5px 0; font-size: 16px; color: #0f172a; font-weight: 700; }
+        .file-info p { margin: 0; font-size: 13px; color: #475569; }
+        
+        .owner-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #e2e8f0;
+            color: #475569;
+            margin-left: 15px;
+            white-space: nowrap;
+        }
+
+        /* Specific File Colors */
+        .f-auto { border-left-color: #8b5cf6; }
+        .f-brand { border-left-color: var(--brand-blue); }
+        .f-influencer { border-left-color: var(--creator-orange); }
+        .f-draft { border-left-color: #64748b; }
+        .f-action { border-left-color: var(--action-green); background: #ecfdf5; border: 2px solid var(--action-green); }
+
+        /* --- GMAIL LABELS --- */
+        .label-demo {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-dim);
+            margin-top: 40px;
+        }
+
+        .gmail-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .tag-blue { background-color: var(--brand-blue); }
+        .tag-orange { background-color: var(--creator-orange); }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .header h1 { font-size: 26px; }
+            
+            .roles-container {
+                grid-template-columns: 1fr; /* Stack roles */
+            }
+
+            .workflow-box { padding: 20px 10px; }
+            
+            .flow-steps {
+                flex-direction: column; /* Stack steps vertically */
+                align-items: flex-start;
+                gap: 20px;
+                padding-left: 20px;
+                margin-top: 20px;
+            }
+
+            .flow-line {
+                width: 3px;
+                height: auto;
+                top: 0;
+                bottom: 0;
+                left: 44px; /* Align line vertical */
+                right: auto;
+            }
+
+            .step {
+                flex-direction: row; /* Horizontal Step items */
+                width: 100%;
+                gap: 15px;
+                text-align: left;
+            }
+
+            .circle { margin-bottom: 0; width: 40px; height: 40px; min-width: 40px; }
+            
+            .file-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .file-icon { margin-bottom: 5px; }
+            .owner-tag { margin-left: 0; align-self: flex-start; }
+            
+            .gmail-row {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 5px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER -->
+        <div class="header">
+            <h1>WHISKERS MEDIA</h1>
+            <p>Team Hub & Pipeline Protocol</p>
+            <div class="shared-email">📧 lammi@whiskersmedia.com</div>
+        </div>
+
+        <!-- TEAM ROLES -->
+        <div class="section-title">01. Who Does What</div>
+        <div class="roles-container">
+            <div class="role-card" style="border-top-color: var(--brand-blue);">
+                <span style="color: var(--brand-blue)">Brand Outreach</span>
+                <h3>Sadat</h3>
+                <p>Scouts High-Paying Brands. Runs Cold Outreach automation. Handles brand Follow-ups.</p>
+            </div>
+            <div class="role-card" style="border-top-color: var(--creator-orange);">
+                <span style="color: var(--creator-orange)">Influencer Lead</span>
+                <h3>Sharif</h3>
+                <p>Finds new Influencers. Handles all outreach emails. <strong>Negotiates deals</strong> with creators.</p>
+            </div>
+            <div class="role-card" style="border-top-color: var(--action-green);">
+                <span style="color: var(--action-green)">The Closers</span>
+                <h3>Sara & Lammi</h3>
+                <p>High-level Brand Negotiations. Contract Signings. Turning "Responses" into Revenue.</p>
+            </div>
+        </div>
+
+        <!-- WORKFLOW -->
+        <div class="section-title">02. The Pipeline Flow</div>
+        <div class="workflow-box">
+            <h3 style="color:#fff; margin-top:0;">How a Deal is Made</h3>
+            <p style="color:var(--text-muted);">From finding the email to signing the contract</p>
+            
+            <div class="flow-steps">
+                <div class="flow-line"></div>
+                
+                <div class="step">
+                    <div class="circle brand">1</div>
+                    <div>
+                        <div class="step-label">Find</div>
+                        <div class="step-sub">Sourcing Leads</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="circle brand">2</div>
+                    <div>
+                        <div class="step-label">REACHOUT</div>
+                        <div class="step-sub">Auto-send / Manual</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="circle creator">3</div>
+                    <div>
+                        <div class="step-label">Tracking</div>
+                        <div class="step-sub">Includes Follow-ups</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="circle active">4</div>
+                    <div>
+                        <div class="step-label">ACTION SHEET</div>
+                        <div class="step-sub">Responses land here</div>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="circle active">5</div>
+                    <div>
+                        <div class="step-label">$$ Close</div>
+                        <div class="step-sub">Negotiation</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILE ECOSYSTEM -->
+        <div class="section-title">03. The File Ecosystem</div>
+        <div class="sheet-grid">
+            
+            <!-- AUTO SEND -->
+            <div class="file-row f-auto">
+                <div class="file-icon" style="color: #8b5cf6;">🚀</div>
+                <div class="file-info">
+                    <h4>Auto Send File</h4>
+                    <p>The Automation Engine. Use this for mass emailing Brands & Influencers. <br>
+                    Includes "Delay Scripts" for safety.</p>
+                </div>
+                <div class="owner-tag">Shared: Sadat & Sharif</div>
+            </div>
+
+            <!-- ACTION SHEET -->
+            <div class="file-row f-action">
+                <div class="file-icon" style="color: var(--action-green);">⚡</div>
+                <div class="file-info">
+                    <h4 style="color: #064e3b;">THE ACTION SHEET (Critical)</h4>
+                    <p><strong>Status: RESPONDED.</strong> When a Brand replies "Yes" or "Maybe".<br>
+                    This is the war room for Sara & Lammi.</p>
+                </div>
+                <div class="owner-tag" style="background:#a7f3d0; color: #064e3b;">⚠️ Sara & Lammi</div>
+            </div>
+
+            <!-- BRAND TRACKER -->
+            <div class="file-row f-brand">
+                <div class="file-icon" style="color: var(--brand-blue);">🏢</div>
+                <div class="file-info">
+                    <h4>Brand Tracker</h4>
+                    <p>Historical Database of every brand we contacted.<br>
+                    Sadat manages status updates and follow-up schedules here.</p>
+                </div>
+                <div class="owner-tag">Owner: Sadat</div>
+            </div>
+
+            <!-- INFLUENCER TRACKER -->
+            <div class="file-row f-influencer">
+                <div class="file-icon" style="color: var(--creator-orange);">🤳</div>
+                <div class="file-info">
+                    <h4>Influencer Tracking Sheet</h4>
+                    <p>Talent Database. Follower counts, Niches, Rates, and Negotiation status.<br>
+                    Sharif manages this pipeline.</p>
+                </div>
+                <div class="owner-tag">Owner: Sharif</div>
+            </div>
+
+            <!-- OUTREACH DRAFTS -->
+            <div class="file-row f-draft">
+                <div class="file-icon" style="color: #64748b;">📝</div>
+                <div class="file-info">
+                    <h4>Autoreach Sheet (Drafts)</h4>
+                    <p>Staging area. Used to generate Gmail drafts in bulk for manual review.</p>
+                </div>
+                <div class="owner-tag">Owner: Sadat</div>
+            </div>
+
+        </div>
+
+        <!-- GMAIL PROTOCOL -->
+        <div class="label-demo">
+            <h3 style="margin-top:0; color:#fff;">📨 Shared Inbox Labels</h3>
+            <p style="font-size:14px; margin-bottom:20px; color:var(--text-muted);">Please verify the Label color before archiving.</p>
+            
+            <div class="gmail-row" style="display:flex; align-items:center; gap:20px; font-family: monospace; color:#333; background:#f1f5f9; padding:15px; border-radius:6px; border-bottom: 1px solid #ddd;">
+                <div><span style="color:#aaa;">□</span> Me, Mail</div>
+                <div class="gmail-tag tag-blue">Brands</div>
+                <div>Re: David, seeing great potential...</div>
+            </div>
+            
+            <div class="gmail-row" style="display:flex; align-items:center; gap:20px; font-family: monospace; color:#333; background:#f1f5f9; padding:15px; border-radius:6px; margin-top:5px;">
+                <div><span style="color:#aaa;">□</span> Me, Mail</div>
+                <div class="gmail-tag tag-orange">Creators</div>
+                <div>Re: Magnus, connecting regarding...</div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px; font-size:12px; color:#555;">
+            CONFIDENTIAL INTERNAL DOCUMENT • WHISKERS MEDIA
+        </div>
+
+    </div>
+
+</body>
+</html>
